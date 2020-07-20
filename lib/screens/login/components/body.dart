@@ -20,49 +20,53 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     LoginBloc _loginBloc = BlocProvider.of<LoginBloc>(context);
-    return Background(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image.asset(
-            'assets/images/login.png',
-            height: size.height * 0.25,
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        if (state is LoginLoading) {
+          return Background(
+            child: Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            ),
+          );
+        }
+        return Background(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/images/login.png',
+                height: size.height * 0.25,
+              ),
+              Text(
+                'LOGIN',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              RoundedNipField(
+                icon: Icons.person,
+                hintText: 'Your NIP',
+                onChanged: (value) {},
+                controllerNip: controllerNip,
+              ),
+              RoundedPasswordBtn(
+                controllerPwd: controllerPwd,
+              ),
+              RoundedButton(
+                text: 'Login',
+                textColor: Colors.white,
+                xWidth: 0.7,
+                press: () {
+                  String username = controllerNip.text.trim();
+                  String password = controllerPwd.text.trim();
+                  _loginBloc.add(
+                      LoginEvent(LoginBody(username, password, 'password')));
+                },
+              ),
+            ],
           ),
-          Text(
-            'LOGIN',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          RoundedNipField(
-            icon: Icons.person,
-            hintText: 'Your NIP',
-            onChanged: (value) {},
-            controllerNip: controllerNip,
-          ),
-          RoundedPasswordBtn(
-            controllerPwd: controllerPwd,
-          ),
-          RoundedButton(
-            text: 'Login',
-            textColor: Colors.white,
-            xWidth: 0.7,
-            press: () {
-              String username = controllerNip.text.trim();
-              String password = controllerPwd.text.trim();
-              _loginBloc
-                  .add(LoginEvent(LoginBody(username, password, 'password')));
-            },
-          ),
-          BlocBuilder<LoginBloc, LoginState>(
-            builder: (context, state) {
-              if (state is LoginLoading) {
-                return Text('LOADING...');
-              } else {
-                return Container();
-              }
-            },
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }

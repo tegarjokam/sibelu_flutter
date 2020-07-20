@@ -15,6 +15,8 @@ class ApiAuthProvider {
 
   ApiAuthProvider() {
     _dio.options.baseUrl = _baseUrl;
+    _dio.options.connectTimeout = 5000;
+    _dio.options.receiveTimeout = 1000;
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
   }
 
@@ -31,10 +33,19 @@ class ApiAuthProvider {
           },
         ),
       );
+
       return Token.fromJson(response.data);
     } on DioError catch (e) {
       // _printError(e);
       // print('STATUSSSS ..... ${e.response.statusCode.toString().isNotEmpty}');
+      if (e.type == DioErrorType.CONNECT_TIMEOUT) {
+        print('connection timeout');
+        return Token.withError('404');
+      }
+      if (e.type == DioErrorType.RECEIVE_TIMEOUT) {
+        print('receive timeout');
+        return Token.withError('404');
+      }
       if (e.response.statusCode.toString().isNotEmpty) {
         print('masuk error ${e.response.statusCode}');
         return Token.withError('${e.response.statusCode}');
@@ -46,8 +57,4 @@ class ApiAuthProvider {
   // void _printError(error, StackTrace stacktrace) {
   //   debugPrint('error: $error & stacktrace: $stacktrace');
   // }
-
-  void _printError(error) {
-    debugPrint('error: $error ');
-  }
 }

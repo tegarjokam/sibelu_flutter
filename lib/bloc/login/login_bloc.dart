@@ -66,43 +66,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (statusCode == 401 || statusCode == 400) {
           yield LoginFailure('your nip or password incorrect');
           return;
+        } else if (statusCode == 404) {
+          yield LoginFailure('server not found');
+          return;
         } else {
           yield LoginFailure('something error on server');
           return;
         }
       }
     } catch (_) {
-      if (statusCode == null) yield LoginSuccess();
+      if (statusCode == null) {
+        print('status code null = ' + statusCode.toString());
+        yield LoginSuccess();
+      }
     }
     print('lewat get token');
   }
 }
-
-// Token token =
-//           await apiAuthRepository.postLoginUser(loginBody).then((value) {
-//         print('is not empty 1 ? ${value.error.isNotEmpty}');
-//         print('is empty ? ${value.error.isEmpty}');
-//         if (value.error.isEmpty) {
-//           print('TIDDAK ADA ERROR...');
-//           print('token = ${value.accessToken}');
-//           return value;
-//         } else {
-//           print('token = ${value.accessToken}');
-//           statusCode = int.parse(value.error);
-//           print('percobaan error ' + statusCode.toString());
-//           throw 'error bangett';
-//         }
-//       }).catchError((onError) async* {
-//         print('error');
-//         print(onError);
-//         if (statusCode == 401) {
-//           print('masuk statuscode');
-//           yield LoginFailure('your nip or password incorrect');
-//         } else {
-//           yield LoginFailure('something error on server');
-//         }
-//       });
-//       print('TOKENNNNNN = ' + token.accessToken.toString());
-//     } catch (_) {
-//       print(_.toString());
-//       print('STATUS ERROR CODE = ' + statusCode.toString());

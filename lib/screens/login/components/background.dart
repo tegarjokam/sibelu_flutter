@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sibelu_app/bloc/login/login_bloc.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
@@ -15,7 +17,9 @@ class Background extends StatelessWidget {
       color: Colors.amber,
       width: double.infinity,
       height: size.height,
-      child: Stack(alignment: Alignment.center, children: <Widget>[child]),
+      child: Stack(alignment: Alignment.center, children: <Widget>[
+        child,
+      ]),
     );
   }
 }

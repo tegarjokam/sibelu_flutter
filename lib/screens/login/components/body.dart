@@ -24,10 +24,24 @@ class Body extends StatelessWidget {
       builder: (context, state) {
         if (state is LoginLoading) {
           return Background(
-            child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  'assets/images/login.png',
+                  height: size.height * 0.25,
+                ),
+                Text(
+                  'LOGIN..',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CircularProgressIndicator(
+                  strokeWidth: 2,
+                ),
+              ],
             ),
           );
         }

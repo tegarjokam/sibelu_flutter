@@ -17,26 +17,17 @@ class LoginPage extends StatelessWidget {
       body: BlocListener<LoginBloc, LoginState>(
           listener: (BuildContext context, LoginState state) {
             if (state is LoginFailure) {
-              String title = 'Info';
-              showDialog(
-                context: context,
-                builder: (context) {
-                  if (Platform.isIOS) {
-                    return CupertinoAlertDialog(
-                      title: Text(title),
-                      content: Text(state.error),
-                    );
-                  } else {
-                    return AlertDialog(
-                      title: Text(title),
-                      content: Text(state.error),
-                    );
-                  }
-                },
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.red,
+                  duration: Duration(milliseconds: 1500),
+                  content: Text(
+                    state.error.toString().toUpperCase(),
+                  ),
+                ),
               );
             } else if (state is LoginSuccess) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/dashboard_screen', (r) => false);
+              Navigator.pushNamed(context, '/dashboard_screen');
             }
           },
           child: Body(

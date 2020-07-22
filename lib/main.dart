@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sibelu_app/bloc/dashboard/dashboard_bloc.dart';
 import 'package:sibelu_app/bloc/login/login_bloc.dart';
 import 'package:sibelu_app/constants.dart';
 import 'package:sibelu_app/screens/dashboard.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(),
+        ),
+        BlocProvider<DashboardBloc>(
+          create: (context) => DashboardBloc(),
         )
       ],
       child: MaterialApp(
